@@ -70,7 +70,8 @@ defmodule What3Words do
         }}
   """
   def languages(opts \\ []) do
-    make_path(opts)
+    opts
+    |> make_path
     |> @client.get!
     |> extract(:languages, opts[:raw])
   end
