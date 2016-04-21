@@ -8,15 +8,24 @@ defmodule What3Words.TestClient do
   defp words(%{"string" => "word.not.found"}) do
     %{status_code: 200, body: %{error: "4", message: "nah"}}
   end
-  defp words(%{"string" => "index.home.raft"}) do
-    %{status_code: 200, body: %{position: [29.396521, -98.661698]}}
+  defp words(%{"string" => "home.index.raft"}) do
+    %{status_code: 200, body: %{
+      language: "en",
+      position: [40.723008, -74.199598],
+      type: "3 words",
+      words: ["home", "index", "raft"]
+    }}
   end
 
   defp coordinates(%{"position" => "123141.2, 12423523.1"}) do
     %{status_code: 200, body: %{error: "4", message: "nah"}}
   end
-  defp coordinates(%{"position" => "29.396521, -98.661698"}) do
-    %{status_code: 200, body: %{words: ["index", "home", "raft"]}}
+  defp coordinates(%{"position" => "40.723008, -74.199598"}) do
+    %{status_code: 200, body: %{
+      language: "en",
+      position: [40.723008, -74.199598],
+      words: ["home", "index", "raft"]
+    }}
   end
 
   defp languages(_query) do

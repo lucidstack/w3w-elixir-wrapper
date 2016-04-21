@@ -1,13 +1,34 @@
 defmodule What3Words do
-  @client Application.get_env(:what3words, :client)
+  @moduledoc """
+    What3Words is the main module to interact with the w3w API.
+    It includes calls to the three current endpoints: `words_to_position/2`,
+    `position_to_words/2` and `languages/2`.
+
+    To use the What3Words API, be sure
+  """
+
+  @client Application.get_env(:what3words, :client, What3Words.Client)
   import What3Words.Extractor
 
   # Types
   #######
+  @type lat :: float()
+  @type lng :: float()
   @type w3w    :: {String.t, String.t, String.t}
-  @type coords :: {float(), float()}
+  @type coords :: {lat, lng}
 
   @spec words_to_position(w3w, Keyword.t) :: coords
+  @doc """
+    Translates a tuple of 3 words into a `{lat, lng}` tuple.
+    An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
+
+    ## Examples
+        iex> What3Words.words_to_position({"home", "index", "raft"})
+        {:ok, {40.723008, -74.199598}}
+
+        iex> What3Words.words_to_position({"home", "index", "raft"}, raw: true)
+        {:ok, %{language: "en", position: [40.723008, -74.199598], type: "3 words", words: ["home", "index", "raft"]}}
+  """
   def words_to_position(words, opts \\ []) do
     words
     |> make_path(opts)
@@ -16,6 +37,17 @@ defmodule What3Words do
   end
 
   @spec position_to_words(coords, Keyword.t) :: w3w
+  @doc """
+    Translates a tuple `{lat, lng}` into a tuple of 3 words.
+    An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
+
+    ## Examples
+        iex> What3Words.position_to_words({40.723008, -74.199598})
+        {:ok, {"home", "index", "raft"}}
+
+        iex> What3Words.position_to_words({40.723008, -74.199598}, raw: true)
+        {:ok, %{language: "en", position: [40.723008, -74.199598], words: ["home", "index", "raft"]}}
+  """
   def position_to_words(coords, opts \\ []) do
     coords
     |> make_path(opts)
@@ -42,7 +74,7 @@ defmodule What3Words do
     result
   end
 
-  @spec languages(Keyword.t) :: [String.t]
+  @spec languages!(Keyword.t) :: [String.t]
   def languages!(opts \\ []) do
     {:ok, result} = languages(opts)
     result
