@@ -4,7 +4,9 @@ defmodule What3Words do
     It includes calls to the three current endpoints: `words_to_position/2`,
     `position_to_words/2` and `languages/2`.
 
-    To use the What3Words API, be sure
+    To use the What3Words API, be sure to have your API key set up in your `config.exs`:
+
+        config :what3words, key: "yourkey"
   """
 
   @client Application.get_env(:what3words, :client, What3Words.Client)
@@ -22,7 +24,6 @@ defmodule What3Words do
     Translates a tuple of 3 words into a `{lat, lng}` tuple.
     An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-    ## Examples
         iex> What3Words.words_to_position({"home", "index", "raft"})
         {:ok, {40.723008, -74.199598}}
 
@@ -41,7 +42,6 @@ defmodule What3Words do
     Translates a tuple `{lat, lng}` into a tuple of 3 words.
     An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-    ## Examples
         iex> What3Words.position_to_words({40.723008, -74.199598})
         {:ok, {"home", "index", "raft"}}
 
@@ -60,14 +60,11 @@ defmodule What3Words do
     Retrieves all available languages from the w3w API.
     An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-    ## Examples
         iex> What3Words.languages
         {:ok, ["en", "fr"]}
 
         iex> What3Words.languages(raw: true)
-        {:ok, %{languages: [%{"code" => "en", "name_display" => "English"},
-                            %{"code" => "fr", "name_display" => "French"}]
-        }}
+        {:ok, %{languages: [%{"code" => "en", "name_display" => "English"}, %{"code" => "fr", "name_display" => "French"}]}}
   """
   def languages(opts \\ []) do
     opts
