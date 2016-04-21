@@ -30,8 +30,8 @@ defmodule What3Words.TestClient do
 
   defp languages(_query) do
     %{status_code: 200, body: %{languages: [
-      %{"code" => "en", "name" => "English"},
-      %{"code" => "fr", "name" => "French"}
+      %{"code" => "en", "name_display" => "English"},
+      %{"code" => "fr", "name_display" => "French"}
     ]}}
   end
 end

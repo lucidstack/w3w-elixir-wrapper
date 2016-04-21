@@ -56,6 +56,19 @@ defmodule What3Words do
   end
 
   @spec languages(Keyword.t) :: [String.t]
+  @doc """
+    Retrieves all available languages from the w3w API.
+    An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
+
+    ## Examples
+        iex> What3Words.languages
+        {:ok, ["en", "fr"]}
+
+        iex> What3Words.languages(raw: true)
+        {:ok, %{languages: [%{"code" => "en", "name_display" => "English"},
+                            %{"code" => "fr", "name_display" => "French"}]
+        }}
+  """
   def languages(opts \\ []) do
     make_path(opts)
     |> @client.get!
