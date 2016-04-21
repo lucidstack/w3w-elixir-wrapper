@@ -20,15 +20,16 @@ defmodule What3Words do
   @type coords :: {lat, lng}
 
   @spec words_to_position(w3w, Keyword.t) :: coords
-  @doc """
-    Translates a tuple of 3 words into a `{lat, lng}` tuple.
-    An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
+  @doc ~S"""
+  Translates a tuple of 3 words into a `{lat, lng}` tuple.
+  An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api)
+  are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-        iex> What3Words.words_to_position({"home", "index", "raft"})
-        {:ok, {40.723008, -74.199598}}
+      iex> What3Words.words_to_position({"home", "index", "raft"})
+      {:ok, {40.723008, -74.199598}}
 
-        iex> What3Words.words_to_position({"home", "index", "raft"}, raw: true)
-        {:ok, %{language: "en", position: [40.723008, -74.199598], type: "3 words", words: ["home", "index", "raft"]}}
+      iex> What3Words.words_to_position({"home", "index", "raft"}, raw: true)
+      {:ok, %{language: "en", position: [40.723008, -74.199598], type: "3 words", words: ["home", "index", "raft"]}}
   """
   def words_to_position(words, opts \\ []) do
     words
@@ -38,15 +39,16 @@ defmodule What3Words do
   end
 
   @spec position_to_words(coords, Keyword.t) :: w3w
-  @doc """
-    Translates a tuple `{lat, lng}` into a tuple of 3 words.
-    An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
+  @doc ~S"""
+  Translates a tuple `{lat, lng}` into a tuple of 3 words.
+  An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api)
+  are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-        iex> What3Words.position_to_words({40.723008, -74.199598})
-        {:ok, {"home", "index", "raft"}}
+      iex> What3Words.position_to_words({40.723008, -74.199598})
+      {:ok, {"home", "index", "raft"}}
 
-        iex> What3Words.position_to_words({40.723008, -74.199598}, raw: true)
-        {:ok, %{language: "en", position: [40.723008, -74.199598], words: ["home", "index", "raft"]}}
+      iex> What3Words.position_to_words({40.723008, -74.199598}, raw: true)
+      {:ok, %{language: "en", position: [40.723008, -74.199598], words: ["home", "index", "raft"]}}
   """
   def position_to_words(coords, opts \\ []) do
     coords
@@ -56,15 +58,16 @@ defmodule What3Words do
   end
 
   @spec languages(Keyword.t) :: [String.t]
-  @doc """
-    Retrieves all available languages from the w3w API.
-    An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api) are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
+  @doc ~S"""
+  Retrieves all available languages from the w3w API.
+  An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api)
+  are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-        iex> What3Words.languages
-        {:ok, ["en", "fr"]}
+      iex> What3Words.languages
+      {:ok, ["en", "fr"]}
 
-        iex> What3Words.languages(raw: true)
-        {:ok, %{languages: [%{"code" => "en", "name_display" => "English"}, %{"code" => "fr", "name_display" => "French"}]}}
+      iex> What3Words.languages(raw: true)
+      {:ok, %{languages: [%{"code" => "en", "name_display" => "English"}, %{"code" => "fr", "name_display" => "French"}]}}
   """
   def languages(opts \\ []) do
     opts
