@@ -12,6 +12,13 @@ Pretty straightforward! Add the dependency to your `mix.exs`:
   end
 ```
 
+add `:what3words` to the applications to be started:
+```
+  def application do
+    [applications: [:logger, :what3words]]
+  end
+```
+
 and add your API key to your `config.exs` (get one [here](https://map.what3words.com/register?dev=true)):
 ```
 config :what3words, key: "mykey"
