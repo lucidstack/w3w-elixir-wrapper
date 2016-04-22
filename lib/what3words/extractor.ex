@@ -1,5 +1,12 @@
 defmodule What3Words.Extractor do
-  @spec extract(%{}, :atom, boolean()) :: {:ok, any()} | {:error, any()}
+  @moduledoc ~S"""
+  A pure module to extract words, coordinates, and languages from
+  the w3w API response.
+  """
+
+  @type extracted_type :: :coordinates | :words | :languages
+
+  @spec extract(%{}, extracted_type, boolean()) :: {:ok, any()} | {:error, any()}
   def extract(response, type, raw)
 
   def extract(%{body: %{error: _} = body}, _type, true), do: {:error, body}

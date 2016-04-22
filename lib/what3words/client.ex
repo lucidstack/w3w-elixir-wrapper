@@ -1,4 +1,9 @@
 defmodule What3Words.Client do
+  @moduledoc ~S"""
+  Uses `HTTPoison.Base` to make calls to the w3w API.
+  Uses `Poison` to decode the JSON response, and transforms
+  the root keys into atoms.
+  """
   use HTTPoison.Base
 
   @base_url "https://api.what3words.com"

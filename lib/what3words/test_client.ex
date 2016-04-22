@@ -1,4 +1,8 @@
 defmodule What3Words.TestClient do
+  @moduledoc ~S"""
+  A noop client for tests; mocks `What3Words.Client`.
+  """
+
   @base_url "https://api.what3words.com"
 
   def get!("/w3w?" <> query),      do: words(query |> URI.decode_query)

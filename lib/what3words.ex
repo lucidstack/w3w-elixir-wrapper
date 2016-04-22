@@ -1,12 +1,12 @@
 defmodule What3Words do
   @moduledoc """
-    What3Words is the main module to interact with the w3w API.
-    It includes calls to the three current endpoints: `words_to_position/2`,
-    `position_to_words/2` and `languages/2`.
+  What3Words is the main module to interact with the w3w API.
+  It includes calls to the three current endpoints: `words_to_position/2`,
+  `position_to_words/2` and `languages/2`.
 
-    To use the What3Words API, be sure to have your API key set up in your `config.exs`:
+  To use the What3Words API, be sure to have your API key set up in your `config.exs`:
 
-        config :what3words, key: "yourkey"
+      config :what3words, key: "yourkey"
   """
 
   @client Application.get_env(:what3words, :client, What3Words.Client)
@@ -76,18 +76,30 @@ defmodule What3Words do
     |> extract(:languages, opts[:raw])
   end
 
+  @doc ~S"""
+  Same as `words_to_position/2`, but returns the naked values (instead of
+  `{:ok, value}`). Raises a `MatchError` if words are not found.
+  """
   @spec words_to_position!(w3w, Keyword.t) :: coords
   def words_to_position!(words, opts \\ []) do
     {:ok, result} = words_to_position(words, opts)
     result
   end
 
+  @doc ~S"""
+  Same as `position_to_words/2`, but returns the naked values (instead of
+  `{:ok, value}`). Raises a `MatchError` if words are not found.
+  """
   @spec position_to_words!(coords, Keyword.t) :: w3w
   def position_to_words!(words, opts \\ []) do
     {:ok, result} = position_to_words(words, opts)
     result
   end
 
+  @doc ~S"""
+  Same as `languages/1`, but returns the naked values (instead of
+  `{:ok, value}`). Raises a `MatchError` if words are not found.
+  """
   @spec languages!(Keyword.t) :: [String.t]
   def languages!(opts \\ []) do
     {:ok, result} = languages(opts)
