@@ -2,7 +2,7 @@ defmodule What3Words do
   @moduledoc """
   What3Words is the main module to interact with the w3w API.
   It includes calls to the three current endpoints: `words_to_position/2`,
-  `position_to_words/2` and `languages/2`.
+  `position_to_words/2` and `languages/1`.
 
   To use the What3Words API, be sure to have your API key set up in your `config.exs`:
 
