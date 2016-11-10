@@ -2,28 +2,28 @@ defmodule What3WordsTest do
   use ExUnit.Case
   doctest What3Words
 
-  test "words_to_position({word, not, found}) returns {:error, :coordinates_not_found}" do
-    assert What3Words.words_to_position(
+  test "forward({word, not, found}) returns {:error, :coordinates_not_found}" do
+    assert What3Words.forward(
       {"word", "not", "found"}
     ) == {:error, :coordinates_not_found}
   end
 
-  test "words_to_position({home, index, raft}) returns {:ok, {29.396521, -98.661698}}" do
-    assert What3Words.words_to_position(
+  test "forward({home, index, raft}) returns {:ok, {29.396521, -98.661698}}" do
+    assert What3Words.forward(
       {"home", "index", "raft"}
-    ) == {:ok, {40.723008, -74.199598}}
+    ) == {:ok, %{lat: 40.723008, lng: -74.199598}}
   end
 
-  test "position_to_words({123141.2, 12423523.1}) returns {:error, :words_not_found}" do
-    assert What3Words.position_to_words(
+  test "reverse({123141.2, 12423523.1}) returns {:error, :words_not_found}" do
+    assert What3Words.reverse(
       {123141.2, 12423523.1}
     ) == {:error, :words_not_found}
   end
 
-  test "position_to_words({40.723008, -74.199598}) returns {:ok, {home, index, raft}}" do
-    assert What3Words.position_to_words(
+  test "reverse({40.723008, -74.199598}) returns {:ok, {home, index, raft}}" do
+    assert What3Words.reverse(
       {40.723008, -74.199598}
-    ) == {:ok, {"home", "index", "raft"}}
+    ) == {:ok, "home.index.raft"}
   end
 
   test "languages() returns {:ok, [en, fr]}" do

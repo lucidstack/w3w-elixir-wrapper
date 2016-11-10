@@ -6,7 +6,7 @@ defmodule What3Words.Client do
   """
   use HTTPoison.Base
 
-  @base_url "https://api.what3words.com"
+  @base_url "https://api.what3words.com/v2"
   def process_url(url) do
     @base_url <> url
   end

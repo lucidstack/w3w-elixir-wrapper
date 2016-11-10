@@ -12,14 +12,14 @@ defmodule What3WordsExtractorTest do
     assert extract(@test_response, :any, true) == {:error, @test_response.body}
   end
 
-  @test_response %{body: %{position: [1.2, 3.4]}, status_code: 200}
+  @test_response %{body: %{geometry: %{"lat" => 1.2, "lng" => 3.4}}, status_code: 200}
   test "extract(response, :coordinates, false) returns {:ok, coords}" do
-    assert extract(@test_response, :coordinates, false) == {:ok, {1.2, 3.4}}
+    assert extract(@test_response, :coordinates, false) == {:ok, %{lat: 1.2, lng: 3.4}}
   end
 
-  @test_response %{body: %{words: ["home", "index", "raft"]}, status_code: 200}
+  @test_response %{body: %{words: "home.index.raft"}, status_code: 200}
   test "extract(response, :words, false) returns {:ok, words}" do
-    assert extract(@test_response, :words, false) == {:ok, {"home", "index", "raft"}}
+    assert extract(@test_response, :words, false) == {:ok, "home.index.raft"}
   end
 
   @languages [%{"code" => "en", "name" => "English"}, %{"code" => "fr", "name" => "French"}]
