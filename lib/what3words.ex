@@ -91,18 +91,108 @@ defmodule What3Words do
   An optional `opts` keyword argument can be passed: the opts cited [in the w3w API documentation](http://developer.what3words.com/api)
   are supported, plus a `:raw` option is supported, for retrieving the whole response from the API.
 
-  iex> What3Words.autosuggest("home.index.r", "en")
-  {:ok, [
-    %What3Words.Suggestion{
-      distance: 14, rank: 1,
-      words: "plan.clips.area", score: 95.994349285319,
-      place: "Brixton Hill, London", country: "gb",
-      geometry: %{
-        lng: -0.140382,
-        lat: 51.429293
-      }
-    }
-  ]}
+      iex> What3Words.autosuggest("home.index.r", "en")
+      {:ok, [
+        %What3Words.Suggestion{
+          distance: 1,
+          rank: 1,
+          words: "no.options.request",
+          score: 1,
+          place: "King's College, Cambridge",
+          country: "gb",
+          geometry: %{
+            lng: 1.000000,
+            lat: 1.000000
+          }
+        }
+      ]}
+
+  The `clip` and `focus` options work a little bit differently, just to spare you from creating the wanted string yourself.
+  Here's examples for both:
+
+      #
+      # radius in km around lat and lng
+      iex> {lat, lng, km} = {1, 1, 10}
+      iex> opts = %{clip: %{radius: {lat, lng, km}}}
+      iex> What3Words.autosuggest("home.index.r", "en", opts)
+      {:ok, [
+        %What3Words.Suggestion{
+          distance: 1,
+          rank: 1,
+          words: "clip.radius.request",
+          score: 1,
+          place: "King's College, Cambridge",
+          country: "gb",
+          geometry: %{
+            lng: 1.000000,
+            lat: 1.000000
+          }
+        }
+      ]}
+
+      #
+      # bounding box between north east and south west points
+      iex> {nelat, nelng, swlat, swlng} = {1, 1, -1, -1}
+      iex> opts = %{clip: %{bbox: {nelat, nelng, swlat, swlng}}}
+      iex> What3Words.autosuggest("home.index.r", "en", opts)
+      {:ok, [
+        %What3Words.Suggestion{
+          distance: 1,
+          rank: 1,
+          words: "clip.bbox.request",
+          score: 1,
+          place: "King's College, Cambridge",
+          country: "gb",
+          geometry: %{
+            lng: 1.000000,
+            lat: 1.000000
+          }
+        }
+      ]}
+
+      #
+      # clip around focus point by km
+      iex> {focus_lat, focus_lng, km} = {1, 1, 10}
+      iex> opts = %{clip: %{focus: km}, focus: {focus_lat, focus_lng}}
+      iex> What3Words.autosuggest("home.index.r", "en", opts)
+      {:ok, [
+        %What3Words.Suggestion{
+          distance: 1,
+          rank: 1,
+          words: "clip.focus.request",
+          score: 1,
+          place: "King's College, Cambridge",
+          country: "gb",
+          geometry: %{
+            lng: 1.000000,
+            lat: 1.000000
+          }
+        }
+      ]}
+
+      #
+      # focus around lat and lng for better results
+      iex> {focus_lat, focus_lng} = {1, 1}
+      iex> opts = %{focus: {focus_lat, focus_lng}}
+      iex> What3Words.autosuggest("home.index.r", "en", opts)
+      {:ok, [
+        %What3Words.Suggestion{
+          distance: 1,
+          rank: 1,
+          words: "focus.option.request",
+          score: 1,
+          place: "King's College, Cambridge",
+          country: "gb",
+          geometry: %{
+            lng: 1.000000,
+            lat: 1.000000
+          }
+        }
+      ]}
+
+    If you don't like fiddling with those options, good old strings are still supported for the
+    `clip` and `focus` options. If binary strings are detected, the transformations will just be
+    skipped.
   """
   def autosuggest(words, language, opts \\ []) do
     words

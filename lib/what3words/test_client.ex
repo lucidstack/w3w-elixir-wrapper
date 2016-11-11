@@ -44,121 +44,47 @@ defmodule What3Words.TestClient do
 
 
   def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "clip" => "radius(1,1,10)"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 15,
-        "rank" => 2,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
+    body = %{suggestions: [suggestion_with_words("clip.radius.request")]}
+    %{status_code: 200, body: body}
   end
 
-  def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "clip" => "focus(20)"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 17,
-        "rank" => 4,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
+  def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "focus" => "1,1", "clip" => "focus(10)"}) do
+    body = %{suggestions: [suggestion_with_words("clip.focus.request")]}
+    %{status_code: 200, body: body}
   end
 
   def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "clip" => "none"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 20,
-        "rank" => 10,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
-  end
-
-  def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "focus" => "1,1"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 3,
-        "rank" => 100,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
-  end
-
-  def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "focus" => "2,2", "clip" => "focus(10)"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 200,
-        "rank" => 1,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
+    body = %{suggestions: [suggestion_with_words("clip.none.request")]}
+    %{status_code: 200, body: body}
   end
 
   def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "clip" => "bbox(1,1,-1,-1)"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 16,
-        "rank" => 3,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
+    body = %{suggestions: [suggestion_with_words("clip.bbox.request")]}
+    %{status_code: 200, body: body}
+  end
+
+  def autosuggest(%{"lang" => "en", "addr" => "home.index.r", "focus" => "1,1"}) do
+    body = %{suggestions: [suggestion_with_words("focus.option.request")]}
+    %{status_code: 200, body: body}
   end
 
   def autosuggest(%{"lang" => "en", "addr" => "home.index.r"}) do
-    %{status_code: 200, body: %{suggestions: [
-      %{
-        "distance" => 14,
-        "rank" => 1,
-        "words" => "plan.clips.area",
-        "score" => 95.994349285319,
-        "place" => "Brixton Hill, London",
-        "geometry" => %{
-          "lng" => -0.140382,
-          "lat" => 51.429293
-        },
-        "country" => "gb"
-      }]
-    }}
+    body = %{suggestions: [suggestion_with_words("no.options.request")]}
+    %{status_code: 200, body: body}
+  end
+
+  defp suggestion_with_words(words) do
+    %{
+      "distance" => 1,
+      "rank" => 1,
+      "words" => words,
+      "score" => 1,
+      "place" => "King's College, Cambridge",
+      "country" => "gb",
+      "geometry" => %{
+        "lng" => 1.000000,
+        "lat" => 1.000000
+      }
+    }
   end
 end
