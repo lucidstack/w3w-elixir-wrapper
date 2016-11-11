@@ -12,9 +12,10 @@ defmodule What3Words.Extractor do
   def extract(%{body: %{error: _} = body}, _type,         true), do: {:error, body}
   def extract(%{body: body},               _type,         true), do: {:ok,    body}
 
-  def extract(%{body: %{geometry: pos}},    :coordinates, _raw), do: {:ok, pos   |> extract_position}
-  def extract(%{body: %{words: words}},     :words,       _raw), do: {:ok, words}
-  def extract(%{body: %{languages: langs}}, :languages,   _raw), do: {:ok, langs |> Enum.map(&get_code/1)}
+  def extract(%{body: %{geometry: pos}},            :coordinates, _raw), do: {:ok, pos   |> extract_position}
+  def extract(%{body: %{words: words}},             :words,       _raw), do: {:ok, words}
+  def extract(%{body: %{languages: langs}},         :languages,   _raw), do: {:ok, langs |> Enum.map(&get_code/1)}
+  def extract(%{body: %{suggestions: suggestions}}, :autosuggest, _raw), do: {:ok, suggestions |> Enum.map(&get_suggestion/1)}
 
   def extract(_response, type,  _raw), do: {:error, "#{type}_not_found" |> String.to_atom}
 
@@ -22,6 +23,21 @@ defmodule What3Words.Extractor do
   ########################
   defp get_code(language) do
     language["code"]
+  end
+
+  defp get_suggestion(raw) do
+    %What3Words.Suggestion{
+      distance: raw["distance"],
+      rank: raw["rank"],
+      words: raw["words"],
+      score: raw["score"],
+      place: raw["place"],
+      country: raw["country"],
+      geometry: %{
+        lng: raw["geometry"]["lng"],
+        lat: raw["geometry"]["lat"]
+      }
+    }
   end
 
   defp extract_position(%{"lat" => lat, "lng" => lng}) do

@@ -32,4 +32,29 @@ defmodule What3WordsExtractorTest do
   test "extract(response_with_error, type, true) returns {:error, :type_not_found}" do
     assert extract(@test_response, :words, false) == {:error, :words_not_found}
   end
+
+  @test_response %{body: %{
+    suggestions: [
+      %{"distance" => 14, "rank" => 1,
+        "words" => "plan.clips.area", "score" => 95.994349285319,
+        "place" => "Brixton Hill, London", "country" => "gb",
+        "geometry" => %{
+          "lng" => -0.140382,
+          "lat" => 51.429293
+        },
+      }]
+    } , status_code: 200}
+  test "extract(response, :autosuggest, false) returns {:ok, suggestions}" do
+    assert extract(@test_response, :autosuggest, false) == {
+      :ok, [%What3Words.Suggestion{
+        distance: 14, rank: 1,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lat: 51.429293,
+          lng: -0.140382,
+        }
+      }]
+    }
+  end
 end

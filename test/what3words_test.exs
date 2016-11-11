@@ -29,4 +29,102 @@ defmodule What3WordsTest do
   test "languages() returns {:ok, [en, fr]}" do
     assert What3Words.languages == {:ok, ["en", "fr"]}
   end
+
+  test "autosuggest(home.index.r, en) returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 14, rank: 1,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en") == {:ok, expected}
+  end
+
+  test "autosuggest with clip on radius returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 15, rank: 2,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en", %{clip: %{radius: {1, 1, 10}}}) == {:ok, expected}
+  end
+
+  test "autosuggest with clip on bbox returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 16, rank: 3,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en", %{clip: %{bbox: {1, 1, -1, -1}}}) == {:ok, expected}
+  end
+
+  test "autosuggest with clip on focus returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 17, rank: 4,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en", %{clip: %{focus: 20}}) == {:ok, expected}
+  end
+
+  test "autosuggest with clip set to false returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 20, rank: 10,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en", %{clip: false}) == {:ok, expected}
+  end
+
+  test "autosuggest with focus parameter returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 3, rank: 100,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en", %{focus: {1,1}}) == {:ok, expected}
+  end
+
+  test "autosuggest with focus and clip returns the correct suggestions" do
+    expected = [
+      %What3Words.Suggestion{
+        distance: 200, rank: 1,
+        words: "plan.clips.area", score: 95.994349285319,
+        place: "Brixton Hill, London", country: "gb",
+        geometry: %{
+          lng: -0.140382,
+          lat: 51.429293
+        }
+      }]
+    assert What3Words.autosuggest("home.index.r", "en", %{clip: %{focus: 10}, focus: {2,2}}) == {:ok, expected}
+  end
 end
