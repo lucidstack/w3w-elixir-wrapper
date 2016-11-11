@@ -1,8 +1,8 @@
 defmodule What3Words do
   @moduledoc """
   What3Words is the main module to interact with the w3w API.
-  It includes calls to the three current endpoints: `forward/2`,
-  `reverse/2` and `languages/1`.
+  It includes calls to all current endpoints: `forward/2`,
+  `reverse/2`, `languages/1`, and `autosuggest/3` (`standardblend` and `grid` coming soon!).
 
   To use the What3Words API, be sure to have your API key set up in your `config.exs`:
 
