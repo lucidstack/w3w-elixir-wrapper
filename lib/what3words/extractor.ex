@@ -9,16 +9,38 @@ defmodule What3Words.Extractor do
   @spec extract(%{}, extracted_type, boolean()) :: {:ok, any()} | {:error, any()}
   def extract(response, type, raw)
 
-  def extract(%{body: %{error: _} = body}, _type, true), do: {:error, body}
-  def extract(%{body: body},               _type, true), do: {:ok,    body}
+  def extract(%{body: %{error: _} = body}, _type,         true), do: {:error, body}
+  def extract(%{body: body},               _type,         true), do: {:ok,    body}
 
-  def extract(%{body: %{position: pos}},    :coordinates, _raw), do: {:ok, pos   |> List.to_tuple}
-  def extract(%{body: %{words: words}},     :words,       _raw), do: {:ok, words |> List.to_tuple}
-  def extract(%{body: %{languages: langs}}, :languages,   _raw), do: {:ok, langs |> Enum.map(&get_code/1)}
+  def extract(%{body: %{geometry: pos}},            :coordinates, _raw), do: {:ok, pos   |> extract_position}
+  def extract(%{body: %{words: words}},             :words,       _raw), do: {:ok, words}
+  def extract(%{body: %{languages: langs}},         :languages,   _raw), do: {:ok, langs |> Enum.map(&get_code/1)}
+  def extract(%{body: %{suggestions: suggestions}}, :autosuggest, _raw), do: {:ok, suggestions |> Enum.map(&get_suggestion/1)}
 
-  def extract(response, type,  _raw), do: {:error, "#{type}_not_found" |> String.to_atom}
+  def extract(_response, type,  _raw), do: {:error, "#{type}_not_found" |> String.to_atom}
 
   # Private implementation
   ########################
-  defp get_code(language), do: language["code"]
+  defp get_code(language) do
+    language["code"]
+  end
+
+  defp get_suggestion(raw) do
+    %What3Words.Suggestion{
+      distance: raw["distance"],
+      rank: raw["rank"],
+      words: raw["words"],
+      score: raw["score"],
+      place: raw["place"],
+      country: raw["country"],
+      geometry: %{
+        lng: raw["geometry"]["lng"],
+        lat: raw["geometry"]["lat"]
+      }
+    }
+  end
+
+  defp extract_position(%{"lat" => lat, "lng" => lng}) do
+    %{lat: lat, lng: lng}
+  end
 end
