@@ -2,13 +2,14 @@
 
 Use the what3words API in your Elixir app (see [the API documentation](http://developer.what3words.com/api)). 🚀
 
+__Hey, version 2.0 is out! 🎶__ Have a look at the [hexdocs](https://hexdocs.pm/what3words) to see what's changed! 
 
 ## Installation
 
 Pretty straightforward! Add the dependency to your `mix.exs`:
 ```
   def deps do
-    [{:what3words, "~> 1.0.0"}]
+    [{:what3words, "~> 2.0.0"}]
   end
 ```
 
